@@ -22,8 +22,7 @@ public class ArgumentsAreDifferent extends ComparisonFailure {
         this.message = message;
 
         unfilteredStackTrace = getStackTrace();
-        ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
-        filter.filter(this);
+        ConditionalStackTraceFilter.filter(this);
     }
 
     @Override

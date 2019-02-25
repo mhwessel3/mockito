@@ -217,7 +217,7 @@ public class MockMethodAdvice extends MockMethodDispatcher {
             return origin.invoke(instance, arguments);
         } catch (InvocationTargetException exception) {
             Throwable cause = exception.getCause();
-            new ConditionalStackTraceFilter().filter(hideRecursiveCall(cause, new Throwable().getStackTrace().length, origin.getDeclaringClass()));
+            ConditionalStackTraceFilter.filter(hideRecursiveCall(cause, new Throwable().getStackTrace().length, origin.getDeclaringClass()));
             throw cause;
         }
     }

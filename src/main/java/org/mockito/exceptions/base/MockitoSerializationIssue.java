@@ -33,8 +33,7 @@ public class MockitoSerializationIssue extends ObjectStreamException {
     private void filterStackTrace() {
         unfilteredStackTrace = super.getStackTrace();
 
-        ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
-        filter.filter(this);
+        ConditionalStackTraceFilter.filter(this);
     }
 
     public StackTraceElement[] getUnfilteredStackTrace() {
