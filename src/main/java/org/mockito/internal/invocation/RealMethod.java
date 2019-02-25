@@ -61,7 +61,7 @@ public interface RealMethod extends Serializable {
             try {
                 return behavior.call();
             } catch (Throwable t) {
-                new ConditionalStackTraceFilter().filter(t);
+                ConditionalStackTraceFilter.filter(t);
                 throw t;
             }
         }

@@ -21,7 +21,6 @@ public class ThrowsException implements Answer<Object>, ValidableAnswer, Seriali
 
     private static final long serialVersionUID = 1128820328555183980L;
     private final Throwable throwable;
-    private final ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
 
     /**
      * Creates a new answer always throwing the given throwable. If it is null,
@@ -46,7 +45,7 @@ public class ThrowsException implements Answer<Object>, ValidableAnswer, Seriali
             //Custom exceptions sometimes return null, see #866
             throw throwable;
         }
-        filter.filter(t);
+        ConditionalStackTraceFilter.filter(t);
         throw t;
     }
 
