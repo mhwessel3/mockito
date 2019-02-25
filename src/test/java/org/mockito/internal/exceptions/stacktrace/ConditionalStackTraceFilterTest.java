@@ -11,10 +11,10 @@ import org.mockito.internal.configuration.ConfigurationAccess;
 import org.mockitoutil.TestBase;
 
 import static org.mockitoutil.Conditions.onlyThoseClassesInStackTrace;
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
 
 public class ConditionalStackTraceFilterTest extends TestBase {
 
-    private ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
 
     @Test
     public void shouldNotFilterWhenConfigurationSaysNo() {
@@ -25,7 +25,7 @@ public class ConditionalStackTraceFilterTest extends TestBase {
                 "org.mockito.Mockito"
         ).toThrowable();
 
-        filter.filter(t);
+        filter(t);
 
         Assertions.assertThat(t).has(onlyThoseClassesInStackTrace("org.mockito.Mockito", "org.test.MockitoSampleTest"));
     }
@@ -39,7 +39,7 @@ public class ConditionalStackTraceFilterTest extends TestBase {
                 "org.mockito.Mockito"
         ).toThrowable();
 
-        filter.filter(t);
+        filter(t);
 
         Assertions.assertThat(t).has(onlyThoseClassesInStackTrace("org.test.MockitoSampleTest"));
     }

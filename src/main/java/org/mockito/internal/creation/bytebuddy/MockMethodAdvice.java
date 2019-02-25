@@ -14,12 +14,13 @@ import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.creation.bytebuddy.inject.MockMethodDispatcher;
 import org.mockito.internal.debugging.LocationImpl;
-import org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter;
 import org.mockito.internal.invocation.RealMethod;
 import org.mockito.internal.invocation.SerializableMethod;
 import org.mockito.internal.invocation.mockref.MockReference;
 import org.mockito.internal.invocation.mockref.MockWeakReference;
 import org.mockito.internal.util.concurrent.WeakConcurrentMap;
+
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -217,7 +218,7 @@ public class MockMethodAdvice extends MockMethodDispatcher {
             return origin.invoke(instance, arguments);
         } catch (InvocationTargetException exception) {
             Throwable cause = exception.getCause();
-            new ConditionalStackTraceFilter().filter(hideRecursiveCall(cause, new Throwable().getStackTrace().length, origin.getDeclaringClass()));
+            filter(hideRecursiveCall(cause, new Throwable().getStackTrace().length, origin.getDeclaringClass()));
             throw cause;
         }
     }
