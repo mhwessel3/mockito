@@ -6,9 +6,10 @@
 package org.mockito.exceptions.verification.junit;
 
 import static org.mockito.internal.util.StringUtil.removeFirstLine;
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
 
 import junit.framework.ComparisonFailure;
-import org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter;
+
 
 
 public class ArgumentsAreDifferent extends ComparisonFailure {
@@ -22,8 +23,7 @@ public class ArgumentsAreDifferent extends ComparisonFailure {
         this.message = message;
 
         unfilteredStackTrace = getStackTrace();
-        ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
-        filter.filter(this);
+        filter(this);
     }
 
     @Override

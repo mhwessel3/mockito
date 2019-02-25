@@ -4,7 +4,8 @@
  */
 package org.mockito.internal.invocation;
 
-import org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter;
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
+
 import org.mockito.invocation.InvocationFactory;
 import org.mockito.invocation.InvocationOnMock;
 
@@ -61,7 +62,7 @@ public interface RealMethod extends Serializable {
             try {
                 return behavior.call();
             } catch (Throwable t) {
-                new ConditionalStackTraceFilter().filter(t);
+                filter(t);
                 throw t;
             }
         }

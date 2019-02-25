@@ -5,7 +5,7 @@
 
 package org.mockito.exceptions.base;
 
-import org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter;
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
 
 
 /**
@@ -39,9 +39,7 @@ public class MockitoException extends RuntimeException {
 
     private void filterStackTrace() {
         unfilteredStackTrace = getStackTrace();
-
-        ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
-        filter.filter(this);
+        filter(this);
     }
 
     public StackTraceElement[] getUnfilteredStackTrace() {
