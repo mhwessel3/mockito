@@ -32,7 +32,10 @@ public class TerminalMockCandidateFilter implements MockCandidateFilter {
             return new OngoingInjector() {
                 public Object thenInject() {
                     try {
-                        if (!new BeanPropertySetter(injectee, candidateFieldToBeInjected).set(matchingMock)) {
+                        BeanPropertySetter.target = injectee;
+                        BeanPropertySetter.field = candidateFieldToBeInjected;
+                        BeanPropertySetter.reportNoSetterFound = false;
+                        if (!BeanPropertySetter.set(matchingMock)) {
                             setField(injectee, candidateFieldToBeInjected,matchingMock);
                         }
                     } catch (RuntimeException e) {
