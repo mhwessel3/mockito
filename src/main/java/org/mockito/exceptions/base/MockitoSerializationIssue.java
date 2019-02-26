@@ -5,7 +5,7 @@
 
 package org.mockito.exceptions.base;
 
-import org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter;
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
 
 import java.io.ObjectStreamException;
 
@@ -33,8 +33,7 @@ public class MockitoSerializationIssue extends ObjectStreamException {
     private void filterStackTrace() {
         unfilteredStackTrace = super.getStackTrace();
 
-        ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
-        filter.filter(this);
+        filter(this);
     }
 
     public StackTraceElement[] getUnfilteredStackTrace() {

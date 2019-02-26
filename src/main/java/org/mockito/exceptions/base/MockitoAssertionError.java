@@ -5,7 +5,7 @@
 
 package org.mockito.exceptions.base;
 
-import org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter;
+import static org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter.filter;
 
 /**
  * Base class for verification errors emitted by Mockito.
@@ -31,8 +31,7 @@ public class MockitoAssertionError extends AssertionError {
 
         unfilteredStackTrace = getStackTrace();
 
-        ConditionalStackTraceFilter filter = new ConditionalStackTraceFilter();
-        filter.filter(this);
+        filter(this);
     }
 
     /**

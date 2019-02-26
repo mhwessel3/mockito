@@ -10,13 +10,15 @@ import org.mockito.internal.configuration.GlobalConfiguration;
 
 import java.io.Serializable;
 
-public class ConditionalStackTraceFilter implements Serializable {
+public final class ConditionalStackTraceFilter implements Serializable {
     private static final long serialVersionUID = -8085849703510292641L;
 
-    private final IMockitoConfiguration config = new GlobalConfiguration();
-    private final StackTraceFilter filter = new StackTraceFilter();
+    private static final IMockitoConfiguration config = new GlobalConfiguration();
+    private static final StackTraceFilter filter = new StackTraceFilter();
 
-    public void filter(Throwable throwable) {
+    private ConditionalStackTraceFilter(){}
+
+    public static void filter(Throwable throwable) {
         if (!config.cleansStackTrace()) {
             return;
         }
