@@ -4,33 +4,34 @@
  */
 package org.mockito.internal.util.reflection;
 
-import static org.mockito.internal.util.reflection.AccessibilityChanger.enableAccess;
-import static org.mockito.internal.util.reflection.AccessibilityChanger.safelyDisableAccess;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 @SuppressWarnings("unchecked")
 public class LenientCopyTool {
 
-    FieldCopier fieldCopier = new FieldCopier();
+    public static boolean disableAccessForTest = false;
 
-    public <T> void copyToMock(T from, T mock) {
+    private LenientCopyTool(){
+        throw new UnsupportedOperationException();
+    }
+
+    public static <T> void copyToMock(T from, T mock) {
         copy(from, mock, from.getClass());
     }
 
-    public <T> void copyToRealObject(T from, T to) {
+    public static <T> void copyToRealObject(T from, T to) {
         copy(from, to, from.getClass());
     }
 
-    private <T> void copy(T from, T to, Class<?> fromClazz) {
+    private static <T> void copy(T from, T to, Class<?> fromClazz) {
         while (fromClazz != Object.class) {
             copyValues(from, to, fromClazz);
             fromClazz = fromClazz.getSuperclass();
         }
     }
 
-    private <T> void copyValues(T from, T mock, Class<?> classFrom) {
+    private static <T> void copyValues(T from, T mock, Class<?> classFrom) {
         Field[] fields = classFrom.getDeclaredFields();
 
         for (Field field : fields) {
@@ -38,13 +39,18 @@ public class LenientCopyTool {
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
+            AccessibilityChanger accessibilityChanger = new AccessibilityChanger();
             try {
-                enableAccess(field);
-                fieldCopier.copyValue(from, mock, field);
+                accessibilityChanger.enableAccess(field);
+                //Only used for testing, is there a better solution than this?
+                if(disableAccessForTest){
+                    accessibilityChanger.safelyDisableAccess(field);
+                }
+                FieldCopier.copyValue(from, mock, field);
             } catch (Throwable t) {
                 //Ignore - be lenient - if some field cannot be copied then let's be it
             } finally {
-                safelyDisableAccess(field);
+                accessibilityChanger.safelyDisableAccess(field);
             }
         }
     }
