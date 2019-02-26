@@ -6,10 +6,10 @@ package org.mockito.internal.util.reflection;
 
 import org.mockito.internal.util.Checks;
 
-import static org.mockito.internal.util.reflection.FieldSetter.setField;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+
+import static org.mockito.internal.util.reflection.FieldSetter.setField;
 
 /**
  * Represents an accessible instance field.
@@ -40,7 +40,10 @@ public class InstanceField {
      * @see FieldReader
      */
     public Object read() {
-        return reader().read();
+        FieldReader.target = instance;
+        FieldReader.field = field;
+        FieldReader.enable();
+        return FieldReader.read();
     }
 
     /**
@@ -59,7 +62,10 @@ public class InstanceField {
      * @return <code>true</code> if <code>null</code>, else <code>false</code>.
      */
     public boolean isNull() {
-        return reader().isNull();
+        FieldReader.target = instance;
+        FieldReader.field = field;
+        FieldReader.enable();
+        return FieldReader.isNull();
     }
 
     /**
@@ -99,13 +105,6 @@ public class InstanceField {
      */
     public Field jdkField() {
         return field;
-    }
-
-    private FieldReader reader() {
-        if (fieldReader == null) {
-            fieldReader = new FieldReader(instance, field);
-        }
-        return fieldReader;
     }
 
     /**

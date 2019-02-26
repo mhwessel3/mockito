@@ -54,9 +54,12 @@ public class MockScanner {
         Set<Object> mocks = newMockSafeHashSet();
         for (Field field : clazz.getDeclaredFields()) {
             // mock or spies only
-            FieldReader fieldReader = new FieldReader(instance, field);
+            //FieldReader fieldReader = new FieldReader(instance, field);
+            FieldReader.target = instance;
+            FieldReader.field = field;
+            FieldReader.enable();
 
-            Object mockInstance = preparedMock(fieldReader.read(), field);
+            Object mockInstance = preparedMock(FieldReader.read(), field);
             if (mockInstance != null) {
                 mocks.add(mockInstance);
             }
