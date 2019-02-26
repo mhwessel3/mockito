@@ -7,7 +7,7 @@ package org.mockito.internal.configuration;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.exceptions.base.MockitoException;
-import org.mockito.internal.util.reflection.GenericMaster;
+import static org.mockito.internal.util.reflection.GenericMaster.*;
 
 import java.lang.reflect.Field;
 
@@ -22,7 +22,7 @@ public class CaptorAnnotationProcessor implements FieldAnnotationProcessor<Capto
                + field.getName() + "' has wrong type\n"
                + "For info how to use @Captor annotations see examples in javadoc for MockitoAnnotations class.");
         }
-        Class<?> cls = new GenericMaster().getGenericType(field);
+        Class<?> cls = getGenericType(field);
         return ArgumentCaptor.forClass(cls);
     }
 }
