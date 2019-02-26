@@ -8,23 +8,24 @@ import org.mockito.exceptions.base.MockitoException;
 
 import java.lang.reflect.Field;
 
-public class FieldReader {
+public final class FieldReader {
 
-    final Object target;
-    final Field field;
-    final AccessibilityChanger changer = new AccessibilityChanger();
+     public static Object target = null;
+     public static Field field = null;
+     public static AccessibilityChanger changer = new AccessibilityChanger();
 
-    public FieldReader(Object target, Field field) {
-        this.target = target;
-        this.field = field;
-        changer.enableAccess(field);
+    private FieldReader() {
     }
 
-    public boolean isNull() {
+    public static boolean isNull() {
             return read() == null;
     }
 
-    public Object read() {
+    public static void enable(){
+        changer.enableAccess(field);
+    }
+
+    public static Object read() {
         try {
             return field.get(target);
         } catch (Exception e) {

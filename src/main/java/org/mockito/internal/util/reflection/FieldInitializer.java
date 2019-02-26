@@ -65,7 +65,9 @@ public class FieldInitializer {
     }
 
     private FieldInitializer(Object fieldOwner, Field field, ConstructorInstantiator instantiator) {
-        if(new FieldReader(fieldOwner, field).isNull()) {
+        FieldReader.target = fieldOwner;
+        FieldReader.field = field;
+        if(FieldReader.isNull()) {
             checkNotLocal(field);
             checkNotInner(field);
             checkNotInterface(field);

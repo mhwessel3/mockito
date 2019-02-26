@@ -29,12 +29,15 @@ public class SpyOnInjectedFieldsHandler extends MockInjectionStrategy {
 
     @Override
     protected boolean processInjection(Field field, Object fieldOwner, Set<Object> mockCandidates) {
-        FieldReader fieldReader = new FieldReader(fieldOwner, field);
+        //FieldReader fieldReader = new FieldReader(fieldOwner, field);
+        FieldReader.target = fieldOwner;
+        FieldReader.field = field;
+        FieldReader.enable();
 
         // TODO refoctor : code duplicated in SpyAnnotationEngine
-        if(!fieldReader.isNull() && field.isAnnotationPresent(Spy.class)) {
+        if(!FieldReader.isNull() && field.isAnnotationPresent(Spy.class)) {
             try {
-                Object instance = fieldReader.read();
+                Object instance = FieldReader.read();
                 if (MockUtil.isMock(instance)) {
                     // A. instance has been spied earlier
                     // B. protect against multiple use of MockitoAnnotations.initMocks()

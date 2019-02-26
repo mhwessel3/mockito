@@ -40,7 +40,7 @@ public class InstanceField {
      * @see FieldReader
      */
     public Object read() {
-        return reader().read();
+        return FieldReader.read();
     }
 
     /**
@@ -59,7 +59,7 @@ public class InstanceField {
      * @return <code>true</code> if <code>null</code>, else <code>false</code>.
      */
     public boolean isNull() {
-        return reader().isNull();
+        return FieldReader.isNull();
     }
 
     /**
@@ -101,11 +101,14 @@ public class InstanceField {
         return field;
     }
 
-    private FieldReader reader() {
-        if (fieldReader == null) {
+    private void reader() {
+        FieldReader.target = instance;
+        FieldReader.field = field;
+        FieldReader.enable();
+      /*  if (fieldReader == null) {
             fieldReader = new FieldReader(instance, field);
         }
-        return fieldReader;
+        return fieldReader;*/
     }
 
     /**
