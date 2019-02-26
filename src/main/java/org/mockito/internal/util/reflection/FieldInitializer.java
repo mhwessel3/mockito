@@ -7,6 +7,11 @@ package org.mockito.internal.util.reflection;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.util.MockUtil;
 
+import static java.lang.reflect.Modifier.isStatic;
+import static org.mockito.internal.util.reflection.FieldSetter.setField;
+import static org.mockito.internal.util.reflection.AccessibilityChanger.enableAccess;
+import static org.mockito.internal.util.reflection.AccessibilityChanger.safelyDisableAccess;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -87,15 +92,14 @@ public class FieldInitializer {
      * @return Actual field instance.
      */
     public FieldInitializationReport initialize() {
-        final AccessibilityChanger changer = new AccessibilityChanger();
-        changer.enableAccess(field);
+        enableAccess(field);
 
         try {
             return acquireFieldInstance();
         } catch(IllegalAccessException e) {
             throw new MockitoException("Problems initializing field '" + field.getName() + "' of type '" + field.getType().getSimpleName() + "'", e);
         } finally {
-            changer.safelyDisableAccess(field);
+            safelyDisableAccess(field);
         }
     }
 
@@ -188,11 +192,10 @@ public class FieldInitializer {
         }
 
         public FieldInitializationReport instantiate() {
-            final AccessibilityChanger changer = new AccessibilityChanger();
             Constructor<?> constructor = null;
             try {
                 constructor = field.getType().getDeclaredConstructor();
-                changer.enableAccess(constructor);
+                enableAccess(constructor);
 
                 final Object[] noArg = new Object[0];
                 Object newFieldInstance = constructor.newInstance(noArg);
@@ -209,7 +212,7 @@ public class FieldInitializer {
                 throw new MockitoException("IllegalAccessException (see the stack trace for cause): " + e.toString(), e);
             } finally {
                 if(constructor != null) {
-                    changer.safelyDisableAccess(constructor);
+                    safelyDisableAccess(constructor);
                 }
             }
         }
@@ -262,11 +265,10 @@ public class FieldInitializer {
         }
 
         public FieldInitializationReport instantiate() {
-            final AccessibilityChanger changer = new AccessibilityChanger();
             Constructor<?> constructor = null;
             try {
                 constructor = biggestConstructor(field.getType());
-                changer.enableAccess(constructor);
+                enableAccess(constructor);
 
                 final Object[] args = argResolver.resolveTypeInstances(constructor.getParameterTypes());
                 Object newFieldInstance = constructor.newInstance(args);
@@ -283,7 +285,7 @@ public class FieldInitializer {
                 throw new MockitoException("IllegalAccessException (see the stack trace for cause): " + e.toString(), e);
             } finally {
                 if(constructor != null) {
-                    changer.safelyDisableAccess(constructor);
+                    safelyDisableAccess(constructor);
                 }
             }
         }

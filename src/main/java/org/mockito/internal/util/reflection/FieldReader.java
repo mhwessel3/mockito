@@ -16,7 +16,6 @@ public final class FieldReader {
 
     private FieldReader() {
     }
-
     public static boolean isNull() {
             return read() == null;
     }

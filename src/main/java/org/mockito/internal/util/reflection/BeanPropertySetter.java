@@ -9,27 +9,26 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+import static org.mockito.internal.util.reflection.AccessibilityChanger.enableAccess;
+import static org.mockito.internal.util.reflection.AccessibilityChanger.safelyDisableAccess;
+
 /**
  * This utility class will call the setter of the property to inject a new value.
  */
-public class BeanPropertySetter {
+public final class BeanPropertySetter {
 
-    private static final String SET_PREFIX = "set";
-
-    private final Object target;
-    private final boolean reportNoSetterFound;
-    private final Field field;
-
+    public static final String SET_PREFIX = "set";
+    public static Object target;
+    public static Field field;
+    public static boolean reportNoSetterFound;
     /**
      * New BeanPropertySetter
      * @param target The target on which the setter must be invoked
      * @param propertyField The field that should be accessed with the setter
      * @param reportNoSetterFound Allow the set method to raise an Exception if the setter cannot be found
      */
-    public BeanPropertySetter(final Object target, final Field propertyField, boolean reportNoSetterFound) {
-        this.field = propertyField;
-        this.target = target;
-        this.reportNoSetterFound = reportNoSetterFound;
+    private BeanPropertySetter() {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -37,9 +36,6 @@ public class BeanPropertySetter {
      * @param target The target on which the setter must be invoked
      * @param propertyField The propertyField that must be accessed through a setter
      */
-    public BeanPropertySetter(final Object target, final Field propertyField) {
-        this(target, propertyField, false);
-    }
 
     /**
      * Set the value to the property represented by this {@link BeanPropertySetter}
@@ -48,14 +44,13 @@ public class BeanPropertySetter {
      * @throws RuntimeException Can be thrown if the setter threw an exception, if the setter is not accessible
      *          or, if <code>reportNoSetterFound</code> and setter could not be found.
      */
-    public boolean set(final Object value) {
+    public static boolean set(final Object value) {
 
-        AccessibilityChanger changer = new AccessibilityChanger();
         Method writeMethod = null;
         try {
             writeMethod = target.getClass().getMethod(setterName(field.getName()), field.getType());
 
-            changer.enableAccess(writeMethod);
+            enableAccess(writeMethod);
             writeMethod.invoke(target, value);
             return true;
         } catch (InvocationTargetException e) {
@@ -66,7 +61,7 @@ public class BeanPropertySetter {
             reportNoSetterFound();
         } finally {
             if(writeMethod != null) {
-                changer.safelyDisableAccess(writeMethod);
+                safelyDisableAccess(writeMethod);
             }
         }
 
@@ -82,14 +77,14 @@ public class BeanPropertySetter {
      * @param fieldName the Field name
      * @return Setter name.
      */
-    private String setterName(String fieldName) {
+    private static String setterName(String fieldName) {
         return new StringBuilder(SET_PREFIX)
                 .append(fieldName.substring(0, 1).toUpperCase(Locale.ENGLISH))
                 .append(fieldName.substring(1))
                 .toString();
     }
 
-    private void reportNoSetterFound() {
+    private static void reportNoSetterFound() {
         if(reportNoSetterFound) {
             throw new RuntimeException("Problems setting value on object: [" + target + "] for property : [" + field.getName() + "], setter not found");
         }
