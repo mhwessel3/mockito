@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.reflect.Modifier.isStatic;
 import static org.mockito.internal.util.reflection.FieldSetter.setField;
 
 /**

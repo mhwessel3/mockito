@@ -10,8 +10,8 @@ import java.lang.reflect.Field;
 
 public final class FieldReader {
 
-     public static Object target = null;
-     public static Field field = null;
+     public static Object target;
+     public static Field field;
      public static AccessibilityChanger changer = new AccessibilityChanger();
 
     private FieldReader() {
