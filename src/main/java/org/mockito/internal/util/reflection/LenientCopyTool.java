@@ -39,18 +39,17 @@ public class LenientCopyTool {
             if (Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
-            AccessibilityChanger accessibilityChanger = new AccessibilityChanger();
             try {
-                accessibilityChanger.enableAccess(field);
+                AccessibilityChanger.enableAccess(field);
                 //Only used for testing, is there a better solution than this?
                 if(disableAccessForTest){
-                    accessibilityChanger.safelyDisableAccess(field);
+                    AccessibilityChanger.safelyDisableAccess(field);
                 }
                 FieldCopier.copyValue(from, mock, field);
             } catch (Throwable t) {
                 //Ignore - be lenient - if some field cannot be copied then let's be it
             } finally {
-                accessibilityChanger.safelyDisableAccess(field);
+                AccessibilityChanger.safelyDisableAccess(field);
             }
         }
     }
