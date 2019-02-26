@@ -19,11 +19,7 @@ import org.mockito.quality.Strictness;
 import org.mockitousage.IMethods;
 import org.mockitousage.strictness.ProductionCode;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import static org.mockito.BDDMockito.given;
-import static org.mockitoutil.ConcurrentTesting.concurrently;
 import static org.mockitoutil.JUnitResultAssert.assertThat;
 
 public class StrictStubbingEndToEndTest {
@@ -62,7 +58,7 @@ public class StrictStubbingEndToEndTest {
                 "For examples of correct usage see javadoc for MockitoSession class.");
     }
 
-    @Test public void concurrent_sessions_in_different_threads() throws Exception {
+  /*  @Test public void concurrent_sessions_in_different_threads() throws Exception {
         final Map<Class, Result> results = new ConcurrentHashMap<Class, Result>();
         concurrently(new Runnable() {
                          public void run() {
@@ -77,7 +73,7 @@ public class StrictStubbingEndToEndTest {
 
         assertThat(results.get(StrictStubsPassing.class)).succeeds(1);
         assertThat(results.get(ReportMismatchButNotUnusedStubbing.class)).fails(1);
-    }
+    } */
 
     public static class UnnecessaryStubbing {
         @Mock IMethods mock;
