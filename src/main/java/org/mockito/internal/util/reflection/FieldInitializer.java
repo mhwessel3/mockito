@@ -7,9 +7,6 @@ package org.mockito.internal.util.reflection;
 import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.util.MockUtil;
 
-import static java.lang.reflect.Modifier.isStatic;
-import static org.mockito.internal.util.reflection.FieldSetter.setField;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +15,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.mockito.internal.util.reflection.FieldSetter.setField;
 
 /**
  * Initialize a field with type instance if a default constructor can be found.
@@ -67,6 +66,7 @@ public class FieldInitializer {
     private FieldInitializer(Object fieldOwner, Field field, ConstructorInstantiator instantiator) {
         FieldReader.target = fieldOwner;
         FieldReader.field = field;
+        FieldReader.enable();
         if(FieldReader.isNull()) {
             checkNotLocal(field);
             checkNotInner(field);
