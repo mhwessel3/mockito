@@ -12,7 +12,7 @@ public final class FieldReader {
 
      public static Object target;
      public static Field field;
-     public static AccessibilityChanger changer = new AccessibilityChanger();
+     public static AccessibilityChanger changer;
 
     private FieldReader() {
     }
