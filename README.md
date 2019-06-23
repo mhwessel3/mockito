@@ -1,4 +1,7 @@
-<a href="http://site.mockito.org">
+# Mockito
+Visit fullRefactor Branch to view Refactors made by my team at KTH Institute of Technology: 
+https://docs.google.com/document/d/1uquTgSRrdQSW5-afuMeDwjK-DEAXuyU2JRubXkALOd4/edit?usp=sharing 
+
 <img src="https://raw.githubusercontent.com/mockito/mockito/master/src/javadoc/org/mockito/logo.png"
      srcset="https://raw.githubusercontent.com/mockito/mockito/master/src/javadoc/org/mockito/logo@2x.png 2x"
      alt="Mockito" />
